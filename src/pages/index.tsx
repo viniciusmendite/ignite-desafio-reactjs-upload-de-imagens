@@ -18,18 +18,39 @@ export default function Home(): JSX.Element {
     hasNextPage,
   } = useInfiniteQuery(
     'images',
-    // TODO AXIOS REQUEST WITH PARAM
-    ,
-    // TODO GET AND RETURN NEXT PAGE PARAM
+    async ({ pageParam = null }) => {
+      const response = await api.get('api/images', {
+        params: { after: pageParam },
+      });
+
+      return response.data;
+    },
+    {
+      getNextPageParam: (lastPage, pages) => {
+        const { after } = lastPage;
+
+        if (after) {
+          return after;
+        }
+
+        return null;
+      },
+    }
   );
 
   const formattedData = useMemo(() => {
-    // TODO FORMAT AND FLAT DATA ARRAY
+    if (data) {
+      const newMap = data.pages.map(item => item.data);
+      return newMap.flat();
+    }
+    return null;
   }, [data]);
 
-  // TODO RENDER LOADING SCREEN
+  console.log(formattedData);
 
-  // TODO RENDER ERROR SCREEN
+  if (isLoading) return <Loading />;
+
+  if (isError) return <Error />;
 
   return (
     <>

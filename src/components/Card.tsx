@@ -17,11 +17,11 @@ interface Card {
 
 interface CardProps {
   data: Card;
-  viewImage: (url: string) => void;
+  viewImage?: (url: string) => void;
 }
 
 export function Card({ data, viewImage }: CardProps): JSX.Element {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <Box key={data.ts} borderRadius="md" bgColor="pGray.800">
