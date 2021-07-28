@@ -38,20 +38,29 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
     },
     title: {
       required: 'Título obrigatório',
-      minLength: { value: 2, message: 'Mínimo de 2 caracteres' },
-      maxLength: { value: 20, message: 'Máximo de 20 caracteres' },
+      minLength: {
+        value: 2,
+        message: 'Mínimo de 2 caracteres',
+      },
+      maxLength: {
+        value: 20,
+        message: 'Máximo de 20 caracteres',
+      },
     },
     description: {
       required: 'Descrição obrigatória',
-      maxLength: { value: 65, message: 'Máximo de 65 caracteres' },
+      maxLength: {
+        value: 65,
+        message: 'Máximo de 65 caracteres',
+      },
     },
   };
 
   const queryClient = useQueryClient();
   const mutation = useMutation(
-    async (dataForm: ImageData) => {
+    async (image: ImageData) => {
       await api.post('/api/images', {
-        ...dataForm,
+        ...image,
         url: imageUrl,
       });
     },
@@ -79,15 +88,15 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
       }
       await mutation.mutateAsync(data);
       toast({
-        status: 'success',
         title: 'Imagem cadastrada',
         description: 'Sua imagem foi cadastrada com sucesso.',
+        status: 'success',
       });
     } catch {
       toast({
-        status: 'error',
         title: 'Falha no cadastro',
         description: 'Ocorreu um erro ao tentar cadastrar a sua imagem.',
+        status: 'error',
       });
     } finally {
       reset();
@@ -106,20 +115,20 @@ export function FormAddImage({ closeModal }: FormAddImageProps): JSX.Element {
           setLocalImageUrl={setLocalImageUrl}
           setError={setError}
           trigger={trigger}
-          error={errors.image}
           {...register('image', formValidations.image)}
+          error={errors.image}
         />
 
         <TextInput
           placeholder="Título da imagem..."
-          error={errors.title}
           {...register('title', formValidations.title)}
+          error={errors.title}
         />
 
         <TextInput
           placeholder="Descrição da imagem..."
-          error={errors.description}
           {...register('description', formValidations.description)}
+          error={errors.description}
         />
       </Stack>
 
